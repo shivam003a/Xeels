@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     loading: false,
-    logged: false
+    logged: false,
+    page: 1
 }
 
 export const userSlice = createSlice({
@@ -20,9 +21,12 @@ export const userSlice = createSlice({
         },
         setLoggedOut: (state) => {
             state.logged = false
+        },
+        incrementPage: (state) => {
+            state.page += 1
         }
     }
 })
 
-export const { stopLoading, startLoading, setLoggedIn, setLoggedOut } = userSlice.actions
+export const { stopLoading, startLoading, setLoggedIn, setLoggedOut, incrementPage } = userSlice.actions
 export default userSlice.reducer

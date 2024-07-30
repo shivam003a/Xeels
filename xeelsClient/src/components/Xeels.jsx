@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,12 +9,11 @@ import VideoCard from './VideoCard'
 const Xeels = () => {
 
     const dispatch = useDispatch()
-    const { loading } = useSelector((state) => {
+    const { loading, page } = useSelector((state) => {
         return state.user
     })
     const navigate = useNavigate()
     const [xeelsList, setXeelsList] = useState([]);
-    const [page, setPage] = useState(1)
 
     const getVideo = async () => {
         const newHeaders = new Headers();
@@ -23,12 +22,11 @@ const Xeels = () => {
 
         dispatch(startLoading())
         try {
-            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/xeels?page=${page}&limit=10`, {
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/xeels?page=${page}&limit=4`, {
                 method: "GET",
                 headers: newHeaders,
                 credentials: "include"
             })
-
             const data = await res.json();
 
             if (res.status === 200) {

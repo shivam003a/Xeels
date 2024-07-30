@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
+import menu from '../assets/menu.png'
+import { useNavigate } from 'react-router-dom';
 
 const VideoCard = ({ id, videoUrl }) => {
-    const [playing, setPlaying] = useState(false);
-    const videoRef = useRef();
+	const [playing, setPlaying] = useState(false);
+	const videoRef = useRef();
+	const observeRef = useRef(null)
+	const navigate = useNavigate()
 
-    useEffect(() => {
+	const handleMenu = ()=>{
+		navigate('/navigate')
+	}
+
+	useEffect(() => {
 		const handlePlay = () => {
 			const videos = document.querySelectorAll('.video')
 			videos.forEach((video) => {
@@ -18,7 +26,7 @@ const VideoCard = ({ id, videoUrl }) => {
 			video.src = videoUrl
 		}
 
-		const observer = new IntersectionObserver((entries) => {
+		observeRef.current = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					loadVideo(entry.target);
@@ -30,26 +38,33 @@ const VideoCard = ({ id, videoUrl }) => {
 					setPlaying(false)
 				}
 			})
-		}, { threshold: 0.1 })
-		observer.observe(videoRef.current)
+		}, { threshold: 0.3 })
 
-		videoRef.current.addEventListener('play', handlePlay)
+		if (videoRef.current) {
+			observeRef.current.observe(videoRef.current);
+			videoRef.current.addEventListener('play', handlePlay);
+		}
 
 		return () => {
-			observer.disconnect();
-			videoRef.current.removeEventListener('play', handlePlay)
+			if (observeRef.current && videoRef.current) {
+				observeRef.current.unobserve(videoRef.current);
+				videoRef.current.removeEventListener('play', handlePlay);
+			}
 		}
 	}, [videoUrl])
 
-    return (
-        <div className='videoContainer w-full h-full relative'>
-            <video ref={videoRef} className='video w-full h-full object-cover' key={id} loop>
-                <source type='video/mp4'></source>
-                Your Browser Does Not Support Video
-            </video>
-            <span className='absolute text-sm text-white top-1 left-0 right-0 p-3 z-10'>For You</span>
-        </div>
-    );
+	return (
+		<div className='videoContainer w-full h-full relative'>
+			<video ref={videoRef} className='video w-full h-full object-cover' loop>
+				<source type='video/mp4'></source>
+				Your Browser Does Not Support Video
+			</video>
+			<div className='absolute top-1 left-0 right-0 p-3 z-10 flex justify-between items-center'>
+				<span className='text-sm text-white'>For You</span>
+				<img src={menu} className='w-[16px] invert' onClick={handleMenu}/>
+			</div>
+		</div>
+	);
 };
 
 export default VideoCard;
