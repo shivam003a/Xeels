@@ -1,6 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './Xeels.css'
-import { useSwipeable } from 'react-swipeable';
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,10 +12,8 @@ const Xeels = () => {
     const { loading } = useSelector((state) => {
         return state.user
     })
-    const myRef = useRef()
     const navigate = useNavigate()
     const [xeelsList, setXeelsList] = useState([]);
-    const [index, setIndex] = useState(0);
     const [page, setPage] = useState(1)
 
     const getVideo = async () => {
@@ -49,46 +45,6 @@ const Xeels = () => {
         dispatch(stopLoading())
     }
 
-    const onSwipeUp = () => {
-        dispatch(startLoading())
-        if (index < xeelsList.length - 1) {
-            setIndex(index + 1);
-        }
-        else if (index === xeelsList.length - 1) {
-            setPage(page + 1);
-        }
-        dispatch(stopLoading())
-    }
-
-    const onSwipeDown = () => {
-        dispatch(startLoading())
-        if (index > 0) {
-            setIndex(index - 1);
-        }
-        else {
-            setXeelsList([])
-            setPage(1)
-        }
-        dispatch(stopLoading())
-    }
-
-    const onSwipeLeft = () => {
-        dispatch(startLoading())
-        navigate('/navigate')
-        dispatch(stopLoading())
-    }
-
-
-    const handlers = useSwipeable({
-        delta: 30,
-        onSwipedUp: onSwipeUp,
-        onSwipedDown: onSwipeDown,
-        onSwipedLeft: onSwipeLeft,
-        preventDefaultTouchmoveEvent: true,
-        trackMouse: true,
-        trackTouch: true
-    })
-
     useEffect(() => {
         getVideo();
     }, [page])
@@ -97,13 +53,12 @@ const Xeels = () => {
         <>
             {
                 loading ? (<Loading />) : (
-                    <div ref={myRef}>
-                        <div {...handlers} className="w-full h-screen videoBox relative">
-                            {
-                                xeelsList[index] && <VideoCard videoUrl={xeelsList[index].videoUrl} id={xeelsList[index]._id}/>
-                            }
-                            <span className='absolute text-sm text-white top-1 left-0 right-0 p-3 z-10'>For You</span>
-                        </div>
+                    <div className="w-full h-screen videoBox overflow-x-hidden overflow-y-scroll">
+                        {
+                            xeelsList && xeelsList.map((xeels) => {
+                                return <VideoCard videoUrl={xeels.videoUrl} key={xeels._id} id={xeels._id} />
+                            })
+                        }
                     </div>
                 )
             }

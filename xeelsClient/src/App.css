@@ -1,3 +1,6 @@
-html{
+.videoBox{
     scroll-snap-type: y mandatory;
+}
+.videoContainer{
+    scroll-snap-align: start;
 }
