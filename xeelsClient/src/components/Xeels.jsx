@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { startLoading, stopLoading } from '../Redux/Slices/userSlice'
 import Loading from './Loading'
+import VideoCard from './VideoCard'
 
 const Xeels = () => {
 
@@ -99,10 +100,7 @@ const Xeels = () => {
                     <div ref={myRef}>
                         <div {...handlers} className="w-full h-screen videoBox relative">
                             {
-                                xeelsList[index] && <video className="w-full h-full object-cover" key={xeelsList[index]._id} autoPlay loop>
-                                    <source src={xeelsList[index].videoUrl} type="video/mp4"></source>
-                                    Your Browser Does not support video
-                                </video>
+                                xeelsList[index] && <VideoCard videoUrl={xeelsList[index].videoUrl} id={xeelsList[index]._id}/>
                             }
                             <span className='absolute text-sm text-white top-1 left-0 right-0 p-3 z-10'>For You</span>
                         </div>
