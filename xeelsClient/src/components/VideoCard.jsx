@@ -30,7 +30,7 @@ const VideoCard = ({ id, videoUrl }) => {
 					setPlaying(false)
 				}
 			})
-		}, { threshold: 0.5 })
+		}, { threshold: 0.3 })
 		observer.observe(videoRef.current)
 
 		videoRef.current.addEventListener('play', handlePlay)
