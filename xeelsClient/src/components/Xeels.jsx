@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { startLoading, stopLoading } from '../Redux/Slices/userSlice'
+import { incrementPage, startLoading, stopLoading } from '../Redux/Slices/userSlice'
 import Loading from './Loading'
 import VideoCard from './VideoCard'
 
@@ -14,24 +14,23 @@ const Xeels = () => {
     })
     const navigate = useNavigate()
     const [xeelsList, setXeelsList] = useState([]);
+    const lastRef = useRef(null)
 
     const getVideo = async () => {
-        const newHeaders = new Headers();
-        newHeaders.append("Content-Type", "application/json");
-        newHeaders.append("Accept", "application/json");
 
-        dispatch(startLoading())
         try {
             const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/xeels?page=${page}&limit=4`, {
                 method: "GET",
-                headers: newHeaders,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
                 credentials: "include"
             })
             const data = await res.json();
 
             if (res.status === 200) {
                 setXeelsList(prev => [...prev, ...data.response])
-                toast.success(`Xeels Page ${page} Fetched`)
             }
             else {
                 navigate('/signin')
@@ -40,12 +39,29 @@ const Xeels = () => {
         } catch (e) {
             toast.error(e.message)
         }
-        dispatch(stopLoading())
     }
 
     useEffect(() => {
         getVideo();
     }, [page])
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                dispatch(incrementPage())
+            }
+        }, { threshold: 0.5 })
+
+        if (lastRef.current) {
+            observer.observe(lastRef.current)
+        }
+
+        return () => {
+            if (lastRef.current) {
+                observer.unobserve(lastRef.current)
+            }
+        }
+    }, [xeelsList])
 
     return (
         <>
@@ -53,8 +69,9 @@ const Xeels = () => {
                 loading ? (<Loading />) : (
                     <div className="w-full h-screen videoBox overflow-x-hidden overflow-y-scroll">
                         {
-                            xeelsList && xeelsList.map((xeels) => {
-                                return <VideoCard videoUrl={xeels.videoUrl} key={xeels._id} id={xeels._id} />
+                            xeelsList && xeelsList.map((xeels, index) => {
+                                let isLast = (xeelsList.length - 1 == index)
+                                return <VideoCard videoUrl={xeels.videoUrl} key={xeels._id} ref={isLast ? lastRef : null} />
                             })
                         }
                     </div>
