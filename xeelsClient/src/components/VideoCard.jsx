@@ -53,6 +53,20 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 		}
 	}, [videoUrl])
 
+	const handleMouseDown = () => {
+		if (videoRef.current) {
+			videoRef.current.pause();
+			setPlaying(false);
+		}
+	};
+
+	const handleMouseUp = () => {
+		if (videoRef.current) {
+			videoRef.current.play();
+			setPlaying(true);
+		}
+	};
+
 	return (
 		<div className='videoContainer w-full h-full relative'>
 			<video ref={(node) => {
@@ -60,7 +74,13 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 				if (ref) {
 					ref.current = node
 				}
-			}} className='video w-full h-full object-cover' loop>
+			}}
+				className='video w-full h-full object-cover'
+				loop
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				onTouchStart={handleMouseDown}
+				onTouchEnd={handleMouseUp}>
 				<source type='video/mp4'></source>
 				Your Browser Does Not Support Video
 			</video>
