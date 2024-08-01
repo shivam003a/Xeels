@@ -67,7 +67,7 @@ const Xeels = () => {
         <>
             {
                 loading ? (<Loading />) : (
-                    <div className="w-full h-screen videoBox overflow-x-hidden overflow-y-scroll">
+                    <div className="w-full h-screen videoBox overflow-x-hidden overflow-y-scroll scrollbar">
                         {
                             xeelsList && xeelsList.map((xeels, index) => {
                                 let isLast = (xeelsList.length - 1 == index)

@@ -10,7 +10,7 @@ import Dummy from './components/Dummy'
 function App() {
 
 	return (
-		<div className='w-full sm:w-full md:w-full lg:w-[350px] mx-auto overflow-hidden border'>
+		<div className='w-full sm:w-full md:w-full lg:w-[350px] mx-auto overflow-hidden'>
 			<Dummy />
 			<Routes>
 				<Route index element={<Signup />} />

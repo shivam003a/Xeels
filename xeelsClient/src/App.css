@@ -8,3 +8,12 @@
 .menu{
     transition: width 200ms linear;
 }
+
+.scrollbar::-webkit-scrollbar{
+    display: none;
+}
+
+.scrollbar{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
