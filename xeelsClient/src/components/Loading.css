@@ -8,6 +8,7 @@
     animation: spin 2s linear infinite;
 }
 
+
 @keyframes spin {
     from{
         transform: rotateZ(0deg);
