@@ -53,7 +53,8 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 		}
 	}, [videoUrl])
 
-	const handleMouseDown = () => {
+	const handleMouseDown = (e) => {
+		e.preventDefault()
 		if (videoRef.current) {
 			videoRef.current.pause();
 			setPlaying(false);
@@ -80,7 +81,9 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
 				onTouchStart={handleMouseDown}
-				onTouchEnd={handleMouseUp}>
+				onTouchEnd={handleMouseUp}
+				controlsList='nodownload'
+				onContextMenu={(e)=> e.preventDefault()}>
 				<source type='video/mp4'></source>
 				Your Browser Does Not Support Video
 			</video>
