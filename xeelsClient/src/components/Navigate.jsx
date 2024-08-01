@@ -49,12 +49,12 @@ const Navigate = () => {
                 loading ? (<Loading />) : (
                     <div className='w-full h-screen flex justify-center items-center'>
                         <div className='w-8/12 p-6 grid grid-cols-2 grid-rows-2 gap-4 justify-center items-center my-auto'>
-                            <button className='aspect-square bg-black text-white rounded-full' onClick={handleBack}>Go back</button>
-                            {logged && <button className='aspect-square bg-black text-white rounded-full' onClick={() => navigate('/upload')}>Upload</button>}
-                            <button className='aspect-square bg-black text-white rounded-full'>Contact</button>
-                            {logged && <button className='aspect-square bg-black text-white rounded-full' onClick={handleSignout}>Signout</button>}
-                            {!logged && <button className='aspect-square bg-black text-white rounded-full' onClick={() => navigate('/signin')}>Signin</button>}
-                            {!logged && <button className='aspect-square bg-black text-white rounded-full' onClick={() => navigate('/signup')}>Signup</button>}
+                            <button className='aspect-square bg-black text-white text-sm rounded-full' onClick={handleBack}>Go back</button>
+                            {logged && <button className='aspect-square bg-black text-white text-sm rounded-full' onClick={() => navigate('/upload')}>Upload</button>}
+                            <button className='aspect-square bg-black text-white text-sm rounded-full'>Contact</button>
+                            {logged && <button className='aspect-square bg-black text-white text-sm rounded-full' onClick={handleSignout}>Signout</button>}
+                            {!logged && <button className='aspect-square bg-black text-white text-sm rounded-full' onClick={() => navigate('/signin')}>Signin</button>}
+                            {!logged && <button className='aspect-square bg-black text-white text-sm rounded-full' onClick={() => navigate('/signup')}>Signup</button>}
                         </div>
                     </div>
                 )

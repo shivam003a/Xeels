@@ -4,3 +4,7 @@
 .videoContainer{
     scroll-snap-align: start;
 }
+
+.menu{
+    transition: width 200ms linear;
+}

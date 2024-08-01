@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import menu from '../assets/menu.png'
+import Navigate from './Navigate'
 import { useNavigate } from 'react-router-dom';
 
 const VideoCard = forwardRef(({ videoUrl }, ref) => {
@@ -7,9 +8,11 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 	const videoRef = useRef();
 	const observeRef = useRef(null)
 	const navigate = useNavigate()
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 	const handleMenu = () => {
-		navigate('/navigate')
+		// navigate('/navigate')
+		setIsMenuOpen(prev=> !prev)
 	}
 
 	useEffect(() => {
@@ -69,14 +72,14 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 	};
 
 	return (
-		<div className='videoContainer w-full h-full relative'>
+		<div className='videoContainer w-full h-full relative flex'>
 			<video ref={(node) => {
 				videoRef.current = node
 				if (ref) {
 					ref.current = node
 				}
 			}}
-				className='video w-full h-full object-cover'
+				className={`video ${isMenuOpen?"w-[4%]": "w-full"} h-full object-cover menu`}
 				loop
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
@@ -89,7 +92,12 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 			</video>
 			<div className='absolute top-1 left-0 right-0 p-3 z-10 flex justify-between items-center'>
 				<span className='text-sm text-white'>For You</span>
-				<img src={menu} className='w-[16px] invert' onClick={handleMenu} />
+				<img src={menu} className={`w-[16px] ${isMenuOpen?"invert-0":"invert"} cursor-pointer`} onClick={handleMenu} />
+			</div>
+
+
+			<div className={`h-full ${isMenuOpen?"w-full":"w-[0px]"} menu`}>
+				<Navigate />
 			</div>
 		</div>
 	);
