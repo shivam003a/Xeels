@@ -110,7 +110,7 @@ const Upload = () => {
                                 <input className="px-3 py-2 border-2 focus:bottom-0 focus:outline-none" type='file' name='video' accept='video/*' onChange={(e) => { setVideo(e.target.files[0]) }} />
                                 <div className='px-3 py-2 border-2 focus:bottom-0 focus:outline-none'>{videoProgress}%</div>
                                 <input className="px-3 py-2 border-2 focus:bottom-0 focus:outline-none" type='text' name='title' placeholder='title' onChange={(e) => { setTitle(e.target.value) }} />
-                                <button className='px-3 py-2 border bg-black text-white mt-4 font-semibold focus:bottom-0 focus:outline-none' onClick={handleUpload}>Upload</button>
+                                <button className='px-3 py-2 border bg-black text-white mt-4 font-semibold focus:bottom-0 focus:outline-none disabled' onClick={handleUpload} disabled={!videoUrl}>Upload</button>
                             </div>
                         </div>
                     </div>

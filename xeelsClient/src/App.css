@@ -17,3 +17,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+.disabled:disabled{
+    background-color: rgb(126, 126, 126);
+}
