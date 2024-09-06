@@ -35,7 +35,7 @@ app.get("/", (req, res)=>{
 })
 
 app.get("/loaderio-e6b4d333512db584d243d2c84860c6a1", (req, res)=>{
-    res.status(201).sendFile(__dirname + "/loaderio-e6b4d333512db584d243d2c84860c6a1.txt")
+    res.status(200).sendFile(__dirname + "/loaderio-e6b4d333512db584d243d2c84860c6a1.txt")
 })
 
 // Setting Routes
