@@ -93,3 +93,8 @@ exports.setNewPin = async(req, res)=>{
         })
     }
 }
+
+exports.getToken = (req, res)=>{
+    res.status(201).sendFile(__dirname + "/loaderio-e6b4d333512db584d243d2c84860c6a1.txt")
+    console.log(__dirname + "/loaderio-e6b4d333512db584d243d2c84860c6a1.txt")
+}
