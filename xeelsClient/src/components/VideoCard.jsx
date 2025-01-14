@@ -35,7 +35,11 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					loadVideo(entry.target);
-					entry.target.play()
+					entry.target.play().then(_ => {
+						console.log("autoplay started")
+					}).catch(err => {
+						console.log("autoplay stopped", err.message)
+					})
 					setPlaying(true)
 				}
 				else {
