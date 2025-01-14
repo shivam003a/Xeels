@@ -2,6 +2,8 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import menu from '../assets/menu.png'
 import Navigate from './Navigate'
 import { useNavigate } from 'react-router-dom';
+import { GoMute } from "react-icons/go";
+import { GoUnmute } from "react-icons/go";
 
 const VideoCard = forwardRef(({ videoUrl }, ref) => {
 	const [playing, setPlaying] = useState(false);
@@ -9,10 +11,11 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 	const observeRef = useRef(null)
 	const navigate = useNavigate()
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
+	const [mute, setMute] = useState(false)
 
 	const handleMenu = () => {
 		// navigate('/navigate')
-		setIsMenuOpen(prev=> !prev)
+		setIsMenuOpen(prev => !prev)
 	}
 
 	useEffect(() => {
@@ -71,6 +74,12 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 		}
 	};
 
+	useEffect(() => {
+		if (videoRef.current) {
+			videoRef.current.muted = mute
+		}
+	}, [mute])
+
 	return (
 		<div className='videoContainer w-full h-full relative flex'>
 			<video ref={(node) => {
@@ -79,24 +88,29 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 					ref.current = node
 				}
 			}}
-				className={`video ${isMenuOpen?"w-[4%]": "w-full"} h-full object-cover menu`}
+				className={`video ${isMenuOpen ? "w-[4%]" : "w-full"} h-full object-cover menu`}
 				loop
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
 				onTouchStart={handleMouseDown}
 				onTouchEnd={handleMouseUp}
 				controlsList='nodownload'
-				onContextMenu={(e)=> e.preventDefault()}>
+				onContextMenu={(e) => e.preventDefault()}>
 				<source type='video/mp4'></source>
 				Your Browser Does Not Support Video
 			</video>
 			<div className='absolute top-1 left-0 right-0 p-3 z-10 flex justify-between items-center'>
 				<span className='text-sm text-white'>For You</span>
-				<img src={menu} className={`w-[16px] ${isMenuOpen?"invert-0":"invert"} cursor-pointer`} onClick={handleMenu} />
+				<img src={menu} className={`w-[16px] ${isMenuOpen ? "invert-0" : "invert"} cursor-pointer`} onClick={handleMenu} />
+			</div>
+			<div className='absolute right-2 bottom-4'>
+				{
+					mute ? <GoMute size={24} className='invert' onClick={() => setMute(!mute)} /> : <GoUnmute size={24} className='invert' onClick={() => setMute(!mute)} />
+				}
 			</div>
 
 
-			<div className={`h-full ${isMenuOpen?"w-full":"w-[0px]"} menu`}>
+			<div className={`h-full ${isMenuOpen ? "w-full" : "w-[0px]"} menu`}>
 				<Navigate />
 			</div>
 		</div>

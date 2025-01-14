@@ -1,5 +1,4 @@
 const User = require('../models/userSchema')
-const Pin = require('../models/pinSchema')
 const bcrypt = require('bcrypt')
 const dotenv = require('dotenv')
 
@@ -7,10 +6,10 @@ dotenv.config()
 
 exports.signup = async (req, res) => {
     try {
-        const { name, email, password, pin } = req.body;
-        const SECRET_MAIL = process.env.SECRET_MAIL
+        let { name, email, password } = req.body;
+        email = email.trim().toLowerCase()
 
-        if (!name || !email || !password || !pin) {
+        if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Fields Can't be Empty",
@@ -28,16 +27,6 @@ exports.signup = async (req, res) => {
             })
         }
 
-        const secret_pin = await Pin.findOne({ uid: SECRET_MAIL })
-        const verify_pin = await bcrypt.compare(pin, secret_pin.pin);
-
-        if (!verify_pin) {
-            return res.status(400).json({
-                success: false,
-                message: "Not Authorised",
-                resposne: null
-            })
-        }
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -67,7 +56,8 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        email = email.trim().toLowerCase()
 
         if (!email || !password) {
             return res.status(400).json({
@@ -147,12 +137,12 @@ exports.signof = async (req, res) => {
     }
 }
 
-exports.verify = async(req, res)=>{
-    try{
+exports.verify = async (req, res) => {
+    try {
         const _id = req.user._id
 
         const response = await User.findById(_id);
-        if(!response){
+        if (!response) {
             return res.status(400).json({
                 success: false,
                 message: "Unauthorised",
@@ -166,7 +156,7 @@ exports.verify = async(req, res)=>{
             response: null
         })
 
-    }catch(e){
+    } catch (e) {
         res.status(500).json({
             success: false,
             message: e.message || "Internal Server Error"
