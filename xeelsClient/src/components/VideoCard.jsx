@@ -14,7 +14,6 @@ const VideoCard = forwardRef(({ videoUrl }, ref) => {
 	const [mute, setMute] = useState(false)
 
 	const handleMenu = () => {
-		// navigate('/navigate')
 		setIsMenuOpen(prev => !prev)
 	}
 
